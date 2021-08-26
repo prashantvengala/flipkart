@@ -1,5 +1,6 @@
 import React from "react";
 import SearchBar from "./SearchBar";
+import { Link } from "react-router-dom";
 
 import {
   AppBar,
@@ -74,7 +75,7 @@ const Header = () => {
     <>
       <AppBar position="fixed" className={classes.header}>
         <ToolBar>
-          <Box className={classes.component}>
+          <Link to="/" className={classes.component}>
             <img src={logoURL} className={classes.logo} />
             <Box className={classes.container}>
               <Typography className={classes.subHeading}>
@@ -85,7 +86,7 @@ const Header = () => {
               </Typography>
               <img src={subURL} alt="subLogo" className={classes.subURL} />
             </Box>
-          </Box>
+          </Link>
           <SearchBar />
           <HeaderButtons />
         </ToolBar>
