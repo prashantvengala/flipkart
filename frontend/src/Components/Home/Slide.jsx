@@ -61,11 +61,11 @@ const useStyles = makeStyles({
     marginTop: 5,
   },
   wrapper: {
-    padding: "25px 15px",
+    padding: "35px 15px",
   },
 });
 
-const Slide = () => {
+const Slide = ({ timer, title }) => {
   const classes = useStyles();
   const timerURL =
     "https://static-assets-web.flixcart.com/www/linchpin/fk-cp-zion/img/timer_a73398.svg";
@@ -82,16 +82,20 @@ const Slide = () => {
     <>
       <Box className={classes.component}>
         <Box className={classes.deal}>
-          <Typography className={classes.dealText}>Deals of the Day</Typography>
-          <img src={timerURL} style={{ width: 24 }} alt="time clock" />
-          <Countdown date={Date.now() + 5.04e7} renderer={renderer} />
-          <Button
-            variant="contained"
-            color="primary"
-            className={classes.button}
-          >
-            View All
-          </Button>
+          <Typography className={classes.dealText}>{title}</Typography>
+          {timer && (
+            <>
+              <img src={timerURL} style={{ width: 24 }} alt="time clock" />
+              <Countdown date={Date.now() + 5.04e7} renderer={renderer} />
+              <Button
+                variant="contained"
+                color="primary"
+                className={classes.button}
+              >
+                View All
+              </Button>
+            </>
+          )}
         </Box>
         <Divider />
         <Carousel
