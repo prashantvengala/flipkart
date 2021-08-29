@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Dialog,
   DialogContent,
@@ -73,10 +73,29 @@ const useStyles = makeStyles({
   },
 });
 
+const initialValue = {
+  login: {
+    view: "login",
+    heading: "Login",
+    subHeading: "Get access to your Orders, Wishlist and Recommendations",
+  },
+  signup: {
+    view: "signup",
+    heading: "Looks like you're new here",
+    subHeading: "Signup to get started",
+  },
+};
+
 const Login = ({ open, setOpen }) => {
   const classes = useStyles();
+  const [account, setAccount] = useState(initialValue.login);
   const handleClose = () => {
     setOpen(false);
+    setAccount(initialValue.login);
+  };
+
+  const toggleAccount = () => {
+    setAccount(initialValue.signup);
   };
   return (
     <>
@@ -84,29 +103,47 @@ const Login = ({ open, setOpen }) => {
         <DialogContent className={classes.component}>
           <Box style={{ display: "flex" }}>
             <Box className={classes.image}>
-              <Typography variant="h5">Login</Typography>
+              <Typography variant="h5">{account.heading}</Typography>
               <Typography style={{ marginTop: 20 }}>
-                Get access to your orders, Wishlist and Recommendations
+                {account.subHeading}
               </Typography>
             </Box>
-            <Box className={classes.login}>
-              <TextField name="username" label="Enter Email/Mobile number" />
-              <TextField name="password" label="Enter Password" />
-              <Typography className={classes.text}>
-                By continuing, you agree to Flipkart's Terms of Use and Privacy
-                Policy.
-              </Typography>
-              <Button variant="contained" className={classes.loginBtn}>
-                Login
-              </Button>
-              <Typography style={{ textAlign: "center" }}>OR</Typography>
-              <Button variant="contained" className={classes.requestBtn}>
-                Request OTP
-              </Button>
-              <Typography className={classes.createText}>
-                New to Flipkart? Create an account
-              </Typography>
-            </Box>
+            {account.view === "login" ? (
+              <Box className={classes.login}>
+                <TextField name="username" label="Enter Email/Mobile number" />
+                <TextField name="password" label="Enter Password" />
+                <Typography className={classes.text}>
+                  By continuing, you agree to Flipkart's Terms of Use and
+                  Privacy Policy.
+                </Typography>
+                <Button variant="contained" className={classes.loginBtn}>
+                  Login
+                </Button>
+                <Typography style={{ textAlign: "center" }}>OR</Typography>
+                <Button variant="contained" className={classes.requestBtn}>
+                  Request OTP
+                </Button>
+                <Typography
+                  className={classes.createText}
+                  onClick={() => toggleAccount()}
+                >
+                  New to Flipkart? Create an account
+                </Typography>
+              </Box>
+            ) : (
+              <Box className={classes.login}>
+                <TextField name="firstname" label="Enter Firstname" />
+                <TextField name="lastname" label="Enter Lastname" />
+                <TextField name="username" label="Enter Username" />
+                <TextField name="email" label="Enter Email" />
+                <TextField name="password" label="Enter Password" />
+                <TextField name="phone" label="Enter Mobile number" />
+
+                <Button variant="contained" className={classes.loginBtn}>
+                  SignUp
+                </Button>
+              </Box>
+            )}
           </Box>
         </DialogContent>
       </Dialog>
