@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useState } from "react";
+import { authenticateSignup } from "../../Services/api";
 import {
   Dialog,
   DialogContent,
@@ -73,40 +74,128 @@ const useStyles = makeStyles({
   },
 });
 
+const initialValue = {
+  login: {
+    view: "login",
+    heading: "Login",
+    subHeading: "Get access to your Orders, Wishlist and Recommendations",
+  },
+  signup: {
+    view: "signup",
+    heading: "Looks like you're new here",
+    subHeading: "Signup to get started",
+  },
+};
+
+const signupInitialValues = {
+  firstname: "",
+  lastname: "",
+  username: "",
+  email: "",
+  password: "",
+  phone: "",
+};
+
 const Login = ({ open, setOpen }) => {
   const classes = useStyles();
+  const [account, setAccount] = useState(initialValue.login);
+  const [signup, setSignup] = useState(signupInitialValues);
+
+  const onInputChange = (e) => {
+    setSignup({ ...signup, [e.target.name]: e.target.value });
+    console.log(signup);
+  };
+
   const handleClose = () => {
     setOpen(false);
+    setAccount(initialValue.login);
   };
+
+  const toggleAccount = () => {
+    setAccount(initialValue.signup);
+  };
+
+  const signupUser = async () => {
+    let response = await authenticateSignup(signup);
+    if (!response) return;
+    handleClose();
+  };
+
   return (
     <>
       <Dialog open={open} onClose={handleClose}>
         <DialogContent className={classes.component}>
           <Box style={{ display: "flex" }}>
             <Box className={classes.image}>
-              <Typography variant="h5">Login</Typography>
+              <Typography variant="h5">{account.heading}</Typography>
               <Typography style={{ marginTop: 20 }}>
-                Get access to your orders, Wishlist and Recommendations
+                {account.subHeading}
               </Typography>
             </Box>
-            <Box className={classes.login}>
-              <TextField name="username" label="Enter Email/Mobile number" />
-              <TextField name="password" label="Enter Password" />
-              <Typography className={classes.text}>
-                By continuing, you agree to Flipkart's Terms of Use and Privacy
-                Policy.
-              </Typography>
-              <Button variant="contained" className={classes.loginBtn}>
-                Login
-              </Button>
-              <Typography style={{ textAlign: "center" }}>OR</Typography>
-              <Button variant="contained" className={classes.requestBtn}>
-                Request OTP
-              </Button>
-              <Typography className={classes.createText}>
-                New to Flipkart? Create an account
-              </Typography>
-            </Box>
+            {account.view === "login" ? (
+              <Box className={classes.login}>
+                <TextField name="username" label="Enter Email/Mobile number" />
+                <TextField name="password" label="Enter Password" />
+                <Typography className={classes.text}>
+                  By continuing, you agree to Flipkart's Terms of Use and
+                  Privacy Policy.
+                </Typography>
+                <Button variant="contained" className={classes.loginBtn}>
+                  Login
+                </Button>
+                <Typography style={{ textAlign: "center" }}>OR</Typography>
+                <Button variant="contained" className={classes.requestBtn}>
+                  Request OTP
+                </Button>
+                <Typography
+                  className={classes.createText}
+                  onClick={() => toggleAccount()}
+                >
+                  New to Flipkart? Create an account
+                </Typography>
+              </Box>
+            ) : (
+              <Box className={classes.login}>
+                <TextField
+                  onChange={(e) => onInputChange(e)}
+                  name="firstname"
+                  label="Enter Firstname"
+                />
+                <TextField
+                  onChange={(e) => onInputChange(e)}
+                  name="lastname"
+                  label="Enter Lastname"
+                />
+                <TextField
+                  onChange={(e) => onInputChange(e)}
+                  name="username"
+                  label="Enter Username"
+                />
+                <TextField
+                  onChange={(e) => onInputChange(e)}
+                  name="email"
+                  label="Enter Email"
+                />
+                <TextField
+                  onChange={(e) => onInputChange(e)}
+                  name="password"
+                  label="Enter Password"
+                />
+                <TextField
+                  onChange={(e) => onInputChange(e)}
+                  name="phone"
+                  label="Enter Mobile number"
+                />
+
+                <Button
+                  variant="contained"
+                  onClick={() => signupUser()}
+                  className={classes.loginBtn}
+                >
+                  SignUp
+                </Button>
+              </Box>
+            )}
           </Box>
         </DialogContent>
       </Dialog>
