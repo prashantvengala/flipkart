@@ -4,19 +4,22 @@ import Home from "../Components/Home/Home";
 import { Switch, Route } from "react-router-dom";
 import Cart from "../Components/Cart/Cart";
 import TemplateProvider from "../Templates/TemplateProvider";
+import ContextProvider from "../Context/ContextProvider";
 const Routes = () => {
   return (
     <>
       <TemplateProvider>
-        <Header />
-        <Switch>
-          <Route exact path="/">
-            <Home />
-          </Route>
-          <Route exact path="/cart">
-            <Cart />
-          </Route>
-        </Switch>
+        <ContextProvider>
+          <Header />
+          <Switch>
+            <Route exact path="/">
+              <Home />
+            </Route>
+            <Route exact path="/cart">
+              <Cart />
+            </Route>
+          </Switch>
+        </ContextProvider>
       </TemplateProvider>
     </>
   );

@@ -96,29 +96,29 @@ const signupInitialValues = {
   phone: "",
 };
 
-const Login = ({ open, setOpen }) => {
+const Login = ({ open, setOpen, setAccount }) => {
   const classes = useStyles();
-  const [account, setAccount] = useState(initialValue.login);
+  const [account, toggleAccount] = useState(initialValue.login);
   const [signup, setSignup] = useState(signupInitialValues);
 
   const onInputChange = (e) => {
     setSignup({ ...signup, [e.target.name]: e.target.value });
-    console.log(signup);
   };
 
   const handleClose = () => {
     setOpen(false);
-    setAccount(initialValue.login);
+    toggleAccount(initialValue.login);
   };
 
-  const toggleAccount = () => {
-    setAccount(initialValue.signup);
+  const toggleUserAccount = () => {
+    toggleAccount(initialValue.signup);
   };
 
   const signupUser = async () => {
     let response = await authenticateSignup(signup);
     if (!response) return;
     handleClose();
+    setAccount(signup.username);
   };
 
   return (
@@ -149,7 +149,7 @@ const Login = ({ open, setOpen }) => {
                 </Button>
                 <Typography
                   className={classes.createText}
-                  onClick={() => toggleAccount()}
+                  onClick={() => toggleUserAccount()}
                 >
                   New to Flipkart? Create an account
                 </Typography>
