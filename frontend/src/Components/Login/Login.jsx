@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { authenticateSignup } from "../../Services/api";
+import { authenticateLogin } from "../../Services/api";
 import {
   Dialog,
   DialogContent,
@@ -96,13 +97,27 @@ const signupInitialValues = {
   phone: "",
 };
 
+const loginInitialValues = {
+  username: "",
+  password: "",
+};
+
 const Login = ({ open, setOpen, setAccount }) => {
   const classes = useStyles();
   const [account, toggleAccount] = useState(initialValue.login);
   const [signup, setSignup] = useState(signupInitialValues);
+  const [login, setLogin] = useState(loginInitialValues);
+  const [error, showError] = useState(false);
 
   const onInputChange = (e) => {
     setSignup({ ...signup, [e.target.name]: e.target.value });
+  };
+
+  const onValueChange = (e) => {
+    setLogin({
+      ...login,
+      [e.target.name]: e.target.value,
+    });
   };
 
   const handleClose = () => {
@@ -121,6 +136,19 @@ const Login = ({ open, setOpen, setAccount }) => {
     setAccount(signup.username);
   };
 
+  const loginUser = async () => {
+    let response = await authenticateLogin(login);
+    if (!response) {
+      alert("Invalid login details");
+      console.log("Invalid login");
+      showError(true);
+    } else {
+      showError(false);
+      handleClose();
+      setAccount(login.username);
+    }
+  };
+
   return (
     <>
       <Dialog open={open} onClose={handleClose}>
@@ -134,13 +162,29 @@ const Login = ({ open, setOpen, setAccount }) => {
             </Box>
             {account.view === "login" ? (
               <Box className={classes.login}>
-                <TextField name="username" label="Enter Email/Mobile number" />
-                <TextField name="password" label="Enter Password" />
+                <TextField
+                  onChange={(e) => onValueChange(e)}
+                  name="username"
+                  label="Enter Username"
+                />
+                {error && (
+                  <Typography className={classes.error}>
+                    Please enter valid Username or Password
+                  </Typography>
+                )}
+                <TextField
+                  onChange={(e) => onValueChange(e)}
+                  name="password"
+                  label="Enter Password"
+                />
                 <Typography className={classes.text}>
                   By continuing, you agree to Flipkart's Terms of Use and
                   Privacy Policy.
                 </Typography>
-                <Button variant="contained" className={classes.loginBtn}>
+                <Button
+                  className={classes.loginBtn}
+                  onClick={() => loginUser()}
+                >
                   Login
                 </Button>
                 <Typography style={{ textAlign: "center" }}>OR</Typography>
