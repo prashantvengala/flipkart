@@ -1,7 +1,6 @@
 import React from "react";
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
-import { dealData } from "../../Utils/data";
 import {
   Box,
   Button,
@@ -65,7 +64,7 @@ const useStyles = makeStyles({
   },
 });
 
-const Slide = ({ timer, title }) => {
+const Slide = ({ timer, title, products }) => {
   const classes = useStyles();
   const timerURL =
     "https://static-assets-web.flixcart.com/www/linchpin/fk-cp-zion/img/timer_a73398.svg";
@@ -112,7 +111,7 @@ const Slide = ({ timer, title }) => {
           dotListClass="custom-dot-list-style"
           itemClass="carousel-item-padding-40-px"
         >
-          {dealData.map((product) => (
+          {products.map((product) => (
             <Box textAlign="center" className={classes.wrapper}>
               <img src={product.url} className={classes.image} />
               <Typography

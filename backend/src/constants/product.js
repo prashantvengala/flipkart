@@ -1,4 +1,4 @@
-module.exports = products = [
+const products = [
   {
     id: "product1",
     url: "https://rukminim1.flixcart.com/image/150/150/kapoo7k0/electric-kettle/p/6/s/pigeon-favourite-original-imafs7xhj5uwgrh4.jpeg?q=70",
@@ -142,3 +142,5 @@ module.exports = products = [
     tagline: "Grab Now!",
   },
 ];
+
+module.exports = products;
